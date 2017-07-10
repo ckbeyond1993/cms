@@ -1,0 +1,4 @@
+/*news新闻*/
+.news li{height:28px; line-height:28px; border-bottom:#CCCCCC 1px dashed; text-indent:2em; background:url(../images/abg.gif) left center no-repeat; margin-left:5px;}
+.news a:link, .news a:visited{color:#366D74; text-decoration:none;}
+.news a:hover, .news a:active{color:red; text-decoration:underline;}

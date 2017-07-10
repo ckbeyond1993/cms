@@ -1,0 +1,107 @@
+
+    <div class="content-box">
+      <!-- Start Content Box -->
+      <div class="content-box-header">
+        <h3>Content box</h3>
+        <ul class="content-box-tabs">        
+          <!-- href must be unique and match the id of target div -->
+          <li><a href="#tab2"  class="default-tab" >Forms</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <!-- End .content-box-header -->
+      <div class="content-box-content">      
+        <div class="tab-content default-tab" id="tab2">
+          <form action="#" method="post" enctype="multipart/form-data">
+            <fieldset>
+            <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+            <p>
+              <label>标题</label>
+              <input class="text-input small-input" type="text" id="small-input" name="title" />
+              <span class="input-notification success png_bg">Successful message</span>
+              <!-- Classes for input-notification: success, error, information, attention -->
+              <br />
+              <small>A small description of the field</small> </p>           
+            <p>
+              <label>内容</label>
+              <textarea class="text-input textarea wysiwyg" id="textarea" name="content" cols="79" rows="15"></textarea>
+            </p>
+			<p id="selDIV">
+               <label>分类</label>
+				<input type="hidden" id="pid" name="cate_id" />
+				<select id="pid0">
+				   <option value=0 status=0>顶级</option>
+				 <?php foreach($cate_arr as $k=>$v):?>
+				   <option value="<?php echo $v['id'];?>" status=1><?php echo $v['name'];?></option>
+				 <?php endforeach;?>
+				</select>
+            </p>
+			<p id="p_img">
+              <label>上传文件</label>
+              <input class="text-input" type="file" id="image" name="image[]" /><span id="add_img" style="font-size: large;margin-left: 10px">+</span>
+            </p>
+                <script>
+                    $('#add_img').click(function(){
+                        var inp = '<div><input class="text-input" type="file" name="image[]"><span class="del_img" style="font-size: large;margin-left: 10px">-</span></div>';
+                        $('#p_img').append(inp);
+                    })
+/*                    $('#p_img').on('click','.del_img',function(){
+                        $(this).parent().remove();
+                    })*/
+                    $('.del_img').live('click',function(){
+                        $(this).parent().remove();
+                    })
+                </script>
+            <p>
+              <input class="button" type="submit" value="Submit" />
+            </p>
+            </fieldset>
+            <div class="clear"></div>
+            <!-- End .clear -->
+          </form>
+        </div>
+        <!-- End #tab2 -->
+      </div>
+      <!-- End .content-box-content -->
+    </div>
+    <!-- End .content-box -->
+			<script>
+		$("#selDIV select").live('change',function(){
+           // var obj = $(this);
+           // obj.nextAll().remove();
+			var id=$(this).val();
+			var level=$(this).attr('id').substr(3);
+			var status=$(this).find('option:selected').attr('status');
+			$("#pid").attr('value',id);
+			level++;
+			//alert(level);
+			//alert (id);
+			$.ajax({
+				type: "get",
+				url: "index.php?admin=admin&c=category&a=next&id="+id,
+				//data: "name=John&location=Boston",
+				dataType:"json",
+				success: function(msg){
+				//alert( "Data Saved: " + msg.length );
+				//alert($("#pid"+level).length);
+				var midlevel=level;
+				while($("#pid"+midlevel).length>0){
+				  $("#pid"+midlevel).remove();
+					++midlevel;
+				}
+					if(msg.length!=0 && status!=0){
+					var nr='';
+						 nr+='<select id="pid'+level+'">';
+						nr+='<option value="'+id+'" status=0>上一级</option>';
+						for(var i=0;i<msg.length;i++){
+						nr+='<option value='+msg[i].id+' status=1>'+msg[i].name+'</option>';
+						}
+						nr+='</select>';
+						$("#selDIV").append(nr);
+					}
+				}
+			});
+		return false;
+		})
+	</script>
+    

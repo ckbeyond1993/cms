@@ -1,0 +1,154 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Simpla Admin by www.865171.cn</title>
+<!--                       CSS                       -->
+<!-- Reset Stylesheet -->
+<link rel="stylesheet" href="resources/css/reset.css" type="text/css" media="screen" />
+<!-- Main Stylesheet -->
+<link rel="stylesheet" href="resources/css/style.css" type="text/css" media="screen" />
+<!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
+<link rel="stylesheet" href="resources/css/invalid.css" type="text/css" media="screen" />
+<!--                       Javascripts                       -->
+<!-- jQuery -->
+<script type="text/javascript" src="resources/scripts/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="resources/scripts/jquery-1.3.2.min.js"></script>
+<!-- jQuery Configuration -->
+<script type="text/javascript" src="resources/scripts/simpla.jquery.configuration.js"></script>
+<!-- Facebox jQuery Plugin -->
+<script type="text/javascript" src="resources/scripts/facebox.js"></script>
+<!-- jQuery WYSIWYG Plugin -->
+<script type="text/javascript" src="resources/scripts/jquery.wysiwyg.js"></script>
+<!-- jQuery Datepicker Plugin -->
+<script type="text/javascript" src="resources/scripts/jquery.datePicker.js"></script>
+<script type="text/javascript" src="resources/scripts/jquery.date.js"></script>
+</head>
+
+
+<body>
+
+<div id="body-wrapper">
+  <!-- Wrapper for the radial gradient background -->
+  <div id="sidebar">
+    <div id="sidebar-wrapper">
+      <!-- Sidebar with logo and menu -->
+      <h1 id="sidebar-title"><a href="#">Simpla Admin</a></h1>
+      <!-- Logo (221px wide) -->
+      <a href="http://www.865171.cn"><img id="logo" src="resources/images/logo.png" alt="Simpla Admin logo" /></a>
+      <!-- Sidebar Profile links -->
+      <div id="profile-links"> Hello, <a href="#" title="Edit your profile"><?php echo $_SESSION["username"];?></a>, you have <a href="#messages" rel="modal" class="message" title="new Messages">0 Messages</a><br />
+        <br />
+        <a href="index.php?c=index&a=index" title="View the Site">View the Site</a> | <a href="index.php?admin=admin&c=admin&a=logout" title="Sign Out">Sign Out</a> </div>
+      <ul id="main-nav">
+			<?php foreach($xml->controller as $c):?>
+			<?php if(in_array($c->menuname->attributes()->id,$_SESSION['level_menu'])):?>
+        <li> <a href="<?php echo $c->link;?>" class="nav-top-item <?php if($c->menuname->attributes()->en==C){echo 'current';}?>"><?php echo $c->menuname;?></a>
+          <ul>
+					<?php foreach($c->action as $a):?>
+					<?php if(in_array($a->navname->attributes()->id,$_SESSION['level_menu'])):?>
+            <li><a class="<?php if($a->navname->attributes()->en==A&&$c->menuname->attributes()->en==C){echo 'current';}?>" href="<?php echo $a->link;?>"><?php echo $a->navname;?></a></li>
+					<?php endif;?>
+					<?php endforeach;?>
+          </ul>
+		</li>
+			<?php endif;?>
+			<?php endforeach;?>
+			</ul>
+      <!-- End #main-nav -->
+      <div id="messages" style="display: none">
+        <!-- Messages are shown when a link with these attributes are clicked: href="#messages" rel="modal"  -->
+        <h3 class="message">You have no Messages</h3>
+        <strong><?php echo date('Y-m-d',time())?></strong>
+		<div id="content"></div>
+       
+
+      </div>
+      <!-- End #messages -->
+	  
+	  
+    </div>
+  </div>
+  <!-- End #sidebar -->
+  <div id="main-content">
+    <!-- Main Content Section with everything -->
+    <noscript>
+    <!-- Show a notification if the user has disabled javascript -->
+    <div class="notification error png_bg">
+      <div> Javascript is disabled or is not supported by your browser. Please <a href="http://browsehappy.com/" title="Upgrade to a better browser">upgrade</a> your browser or <a href="http://www.google.com/support/bin/answer.py?answer=23852" title="Enable Javascript in your browser">enable</a> Javascript to navigate the interface properly.
+        Download From <a href="http://www.exet.tk">exet.tk</a></div>
+    </div>
+    </noscript>
+    <!-- Page Head -->
+    <h2>Welcome www.865171.cn</h2>
+    <p id="page-intro">What would you like to do?</p>
+    <ul class="shortcut-buttons-set">
+      <li><a class="shortcut-button" href="#"><span> <img src="resources/images/icons/pencil_48.png" alt="icon" /><br />
+        Write an Article </span></a></li>
+      <li><a class="shortcut-button" href="#"><span> <img src="resources/images/icons/paper_content_pencil_48.png" alt="icon" /><br />
+        Create a New Page </span></a></li>
+      <li><a class="shortcut-button" href="#"><span> <img src="resources/images/icons/image_add_48.png" alt="icon" /><br />
+        Upload an Image </span></a></li>
+      <li><a class="shortcut-button" href="#"><span> <img src="resources/images/icons/clock_48.png" alt="icon" /><br />
+        Add an Event </span></a></li>
+      <li><a class="shortcut-button" href="#messages" rel="modal"><span> <img src="resources/images/icons/comment_48.png" alt="icon" /><br />
+        Open Modal </span></a></li>
+    </ul>
+    <!-- End .shortcut-buttons-set -->
+    <div class="clear"></div>
+    <!-- End .clear -->
+	
+<script>
+//ajax轮询实现了，10分钟自动访问服务器查看是否有新评论进来，但是严重浪费资源。而长轮询暂未实现，一直是死循环。
+$(function(){
+	new_message();
+	//setInterval(new_message,1000*60);
+})
+	var error = false;
+	var timestamp = 0;
+function new_message(){
+	$.ajax({
+	   type: "POST",
+	   url: "index.php?admin=admin&c=admin&a=ajax_get_new",
+	   data: "action=new_message&timestamp="+timestamp,
+	   timeout : 0,
+	   dataType: 'json',
+	   success: function(data){
+	     error = false;
+		 var msg = data.msg;
+		 var len = msg.length;
+		 timestamp = data.timestamp;
+
+		 $('.message').text(len+' Messages');
+		 var content = "<table width='100%'>";
+		 for(var i=0;i<len;i++){
+		 if(i%2 ==0){
+		     content += "<tr style='height:20px;line-height:20px;background:#f3f3f3'><td style='text-align:center;width:20%;'>"+(i+1)+"</td><td style='text-align:left;width:80%'><a href='index.php?admin=admin&c=message&a=edit&id="+msg[i].id+"'>"+msg[i].title+"</a></td></tr>"
+		 }else{
+			 content += "<tr style='height:20px;line-height:20px;'><td style='text-align:center;width:20%;'>"+(i+1)+"</td><td style='text-align:left;width:80%'><a href='index.php?admin=admin&c=message&a=edit&id="+msg[i].id+"'>"+msg[i].title+"</a></td></tr>"
+		 }
+			
+		 }
+		 content += "</table>";
+		 $('#content').html(content);
+	   }
+
+/*		error : function(){
+			error = true;
+			setTimeout(function(){ new_message();}, 5000);
+		},
+
+		complete : function(){
+            // if a connection problem occurs, try to reconnect each 5 seconds
+			if (error) {
+                setTimeout(function(){new_message();}, 5000);
+            } else{
+                new_message();
+            }
+		}*/
+
+	});
+}
+</script>
+

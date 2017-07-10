@@ -1,0 +1,18 @@
+<div id="logoutDiv" style="text-align:center;font-size:16px">
+<span id="logoutSpan">注册成功，<font color="red">5</font>秒自动跳转首页</span>
+<br>
+<a href="index.php?c=site&a=index" >点击这里跳转</a>
+</div>
+
+<script>
+var i = 5;
+$(function(){
+	setInterval(function(){
+		i--;
+		$('#logoutSpan').html('注册成功，<font color="red">'+i+'</font>秒自动跳转首页');
+		if(i <=0){
+			window.location.href='index.php?c=site&a=index';//调转
+		}
+	},1000);
+});
+</script>

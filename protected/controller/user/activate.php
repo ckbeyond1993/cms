@@ -1,0 +1,13 @@
+<?php 
+$ticket=!empty($_GET['ticket'])?$_GET['ticket']:0;
+$row=getOne("`ticket`='$ticket'",'*','ticket');//$ticket不加''数据库开会报错
+//print_r($row);exit;
+$id=$row['user_id'];
+if(time()-$row['otime']>30*60){
+del('id='.$row['id'],'ticket');//不删除的话，die（）后下面的del（）就不会执行了;
+die("链接超时，请重新注册");
+}
+update('id='.$id,'user',array('status'=>1));
+del('id='.$row['id'],'ticket');//通过Id删除，如果删除所有，当同时有用户进来时，会出错
+view(array(),'user/jump','');
+?>

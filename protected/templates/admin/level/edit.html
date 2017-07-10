@@ -1,0 +1,118 @@
+
+    <div class="content-box">
+      <!-- Start Content Box -->
+      <div class="content-box-header">
+        <h3>Content box</h3>
+        <ul class="content-box-tabs">        
+          <!-- href must be unique and match the id of target div -->
+          <li><a href="#tab2"  class="default-tab" >Forms</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <!-- End .content-box-header -->
+      <div class="content-box-content">      
+        <div class="tab-content default-tab" id="tab2">
+          <form action="#" method="post" enctype="multipart/form-data">
+            <fieldset>
+            <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+            <p>
+              <label>权限组名称</label>
+              <input class="text-input" type="text" id="small-input" name="name" value="<?php echo $name;?>" />
+              <span class="input-notification success png_bg">Successful message</span>
+              <!-- Classes for input-notification: success, error, information, attention -->
+              <br />
+              <small>A small description of the field</small> </p>           
+            <p id="checkDIV">
+              <label>权限</label><!--checked=""||checked="true"||checked="false"都会默认选中;  name="menu"这样写只会取到一个值,前面的值会被覆盖掉-->
+		<?php foreach($xml->controller as $value):?>                                                              <!---当权限组的权限为空，也就是$level为空时，in_array($value->menuname->attributes()->id,$level)会报错，一般情况下不需要这个判断，因为权限组又不给权限很无聊-->
+				<input type="checkbox" name="menu[]" value="<?php echo $value->menuname->attributes()->id;?>" rel="father" data="<?php echo $value->menuname->attributes()->id;?>" <?php if(!empty($level)){if(in_array($value->menuname->attributes()->id,$level)){echo "checked='checked'";}} ?> /><strong><?php echo $value->menuname;?></strong></br>
+				<?php foreach($value->action as $v):?>
+						<input type="checkbox" name="menu[]" value="<?php echo $v->navname->attributes()->id;?>"  rel="child" data="<?php echo $value->menuname->attributes()->id;?>" <?php if(!empty($level)){if(in_array($v->navname->attributes()->id,$level)){echo "checked='checked'";}} ?>  /><?php echo $v->navname;?>
+				<?php endforeach;?><br />
+		<?php endforeach;?>
+            </p>
+			      <p>
+							<a href="javascript:void(0);" id="checkall">全选</a>
+							<a href="javascript:void(0);" id="delcheckall">取消</a>
+							<a href="javascript:void(0);" id="f_check">反选</a>
+						</p>
+            <p>
+              <input class="button" type="submit" value="Submit" />
+            </p>
+            </fieldset>
+            <div class="clear"></div>
+            <!-- End .clear -->
+          </form>
+        </div>
+        <!-- End #tab2 -->
+      </div>
+      <!-- End .content-box-content -->
+    </div>
+    <!-- End .content-box -->
+<script>
+		//全选
+		$("#checkall").click(function(){
+			 $("#checkDIV input[name='menu[]']").attr('checked','checked');// $("#checkDIV input[name='menu[]']").attr('checked','true')前面不行就用后面，后面不行就用前面 
+		})
+		//全取消
+		$("#delcheckall").click(function(){
+			 $("#checkDIV input[name='menu[]']").attr('checked','');//$("#checkDIV input[name='menu[]']").attr('checked','false')
+		})
+		//反选
+		$("#f_check").click(function(){
+				var inp=$("#checkDIV input");
+				//lert(inp);
+			  for(var i=0;i<inp.length;i++){
+				if(inp.eq(i).is(':checked')){//eq()：当获取的对象为多个时，通过此方法获取元素，如：$('.pClass').eq(2)，表示获取样式为pClass的组件的第3个元素
+				  inp.eq(i).attr('checked',false);
+				}
+				else{
+			   inp.eq(i).attr('checked',true);
+				 }
+			 }
+		})
+		
+		
+		
+		//级联关系 点击父类
+		$("input[rel=father]").click(function(){
+			//alert(1);
+			var status=$(this).attr('checked');
+			//alert(status);
+			var data=$(this).attr('data');
+			//alert(data);
+			if(status){
+				$("input[rel=child][data="+data+"]").attr('checked',true);
+			}else{
+				$("input[rel=child][data="+data+"]").attr('checked',false);
+			}
+		})
+		
+		//级联关系 点击子类
+		$("input[rel=child]").click(function(){
+			//alert(1);
+			var status=$(this).attr('checked');
+			//alert(status);
+			var data=$(this).attr('data');
+			//alert(data);
+			var inp=$("input[rel=child][data="+data+"]").is(':checked');   //获取所有子类，只要有一个选中，就为true，全不选才为false;
+			//alert(inp);  //true false
+			if(status){
+				 $("input[rel=father][data="+data+"]").attr('checked',true);
+			}else{
+				 if(inp){
+						$("input[rel=father][data="+data+"]").attr('checked',true);
+					}else{
+						$("input[rel=father][data="+data+"]").attr('checked',false);
+					}
+			}
+			
+		})
+		
+</script>
+ 
+
+
+
+
+ 

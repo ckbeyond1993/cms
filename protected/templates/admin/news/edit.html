@@ -1,0 +1,109 @@
+
+    <div class="content-box">
+      <!-- Start Content Box -->
+      <div class="content-box-header">
+        <h3>Content box</h3>
+        <ul class="content-box-tabs">        
+          <!-- href must be unique and match the id of target div -->
+          <li><a href="#tab2"  class="default-tab" >Forms</a></li>
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <!-- End .content-box-header -->
+      <div class="content-box-content">      
+        <div class="tab-content default-tab" id="tab2">
+          <form action="#" method="post" enctype="multipart/form-data">
+            <fieldset>
+            <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
+            <p>
+              <label>标题</label>
+              <input class="text-input small-input" type="text" id="small-input" name="title" value="<?php echo $title;?>" />
+              <span class="input-notification success png_bg">Successful message</span>
+              <!-- Classes for input-notification: success, error, information, attention -->
+              <br />
+              <small>A small description of the field</small> </p>           
+            <p>
+              <label>内容</label>
+              <textarea class="text-input textarea wysiwyg" id="textarea" name="content" cols="79" rows="15"><?php echo $content;?></textarea>
+            </p>
+			
+
+			 <p id="selDIV">
+              <label>分类</label>
+			  <input type="hidden" name="cate_id" id="pid" value="<?php echo $r['id'];?>"/>
+			  <?php $i=0;?>
+			  <?php foreach($cate_arr as $key=>$value):?>
+				  <select id="pid<?php echo $i;?>">
+					  <option value="<?php echo $value[0]['pid']?>" status=0>上一级</option>
+					<?php foreach($value as $k=>$v) :?>
+					  <option value="<?php echo $v['id']?>" <?php if($key==$v['id']){echo "selected='selected'";}?>" status=1><?php echo $v['name'];?></option>
+					<?php endforeach;?>
+				  </select>
+				  <?php $i++;?>
+			  <?php endforeach;?>
+            </p>
+			
+		
+			<p>
+              <label>修改文件</label>
+				<?php if($image) {
+				    foreach($image as $v){
+				?>
+					<img src="<?php echo $v;?>" width="150px" height="150px"/>
+				<?php }}?></br>
+              <input class="text-input small-input" type="file"  name="image" />
+            </p>
+            <p>
+              <input class="button" type="submit" value="Submit" />
+            </p>
+            </fieldset>
+            <div class="clear"></div>
+            <!-- End .clear -->
+          </form>
+        </div>
+        <!-- End #tab2 -->
+      </div>
+      <!-- End .content-box-content -->
+    </div>
+    <!-- End .content-box -->
+    
+	<script>
+		$("#selDIV select").live('change',function(){
+			//alert ('a');
+			var id=$(this).val();
+			var level=$(this).attr('id').substr(3);
+			var status=$(this).find('option:selected').attr('status');
+			
+			$("#pid").attr('value',id);
+			//alert (status);
+			level++;
+			//alert(level);
+			//alert (id);
+			$.ajax({
+				type: "get",
+				url: "index.php?admin=admin&c=category&a=next&id="+id,
+				//data: "name=John&location=Boston",
+				dataType:"json",
+				success: function(msg){
+				//alert( "Data Saved: " + msg.length );
+				//alert($("#pid"+level).length);
+				var midlevel=level;
+				while($("#pid"+midlevel).length>0){
+				  $("#pid"+midlevel).remove();
+					++midlevel;
+				}
+					if(msg.length!=0 && status!=0){
+					var nr='';
+						 nr+='<select id="pid'+level+'">';
+						nr+='<option value="'+id+'" status=0>上一级</option>';
+						for(var i=0;i<msg.length;i++){
+						nr+='<option value='+msg[i].id+' status=1>'+msg[i].name+'</option>';
+						}
+						nr+='</select>';
+						$("#selDIV").append(nr);
+					}
+				}
+			});
+		return false;
+		})
+	</script>

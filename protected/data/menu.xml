@@ -1,0 +1,70 @@
+<menu>
+	<controller>
+			<menuname en='news' id='1'>新闻模块</menuname>
+			<!-- <link><![CDATA[index.php?admin=admin&c=news&a=index]]></link> -->
+			<action>
+				<navname en='index' id='2'>新闻列表</navname>
+				<link><![CDATA[index.php?admin=admin&c=news&a=index]]></link>
+			</action>
+			<action>
+				<navname en='add' id='3'>新闻新增</navname>
+				<link><![CDATA[index.php?admin=admin&c=news&a=add]]></link>
+			</action>
+	</controller>
+	<controller>
+			<menuname en='admin' id='4'>管理员模块</menuname>
+			<!-- <link><![CDATA[index.php?admin=admin&c=admin&a=index]]></link> -->
+			<action>
+				<navname en='index' id='5'>管理员列表</navname>
+				<link><![CDATA[index.php?admin=admin&c=admin&a=index]]></link>
+			</action>
+			<action>
+				<navname en='add' id='6'>管理员新增</navname>
+				<link><![CDATA[index.php?admin=admin&c=admin&a=add]]></link>
+			</action>
+	</controller>
+	<controller>
+			<menuname en='category' id='7'>分类模块</menuname>
+			<!-- <link><![CDATA[index.php?admin=admin&c=admin&a=index]]></link> -->
+			<action>
+				<navname en='index' id='8'>分类列表</navname>
+				<link><![CDATA[index.php?admin=admin&c=category&a=index]]></link>
+			</action>
+			<action>
+				<navname en='add' id='9'>分类新增</navname>
+				<link><![CDATA[index.php?admin=admin&c=category&a=add]]></link>
+			</action>
+			<action>
+				<navname en='show' id='10'>京东导航</navname>
+				<link><![CDATA[index.php?admin=admin&c=category&a=show]]></link>
+			</action>
+	</controller>
+  	<controller>
+			<menuname en='level' id='11'>权限模块</menuname>
+			<!-- <link><![CDATA[index.php?admin=admin&c=admin&a=index]]></link> -->
+			<action>
+				<navname en='index' id='12'>权限列表</navname>
+				<link><![CDATA[index.php?admin=admin&c=level&a=index]]></link>
+			</action>
+			<action>
+				<navname en='add' id='13'>权限新增</navname>
+				<link><![CDATA[index.php?admin=admin&c=level&a=add]]></link>
+			</action>
+	</controller>
+	<controller>
+			<menuname en='file' id='14'>文件模块</menuname>
+			<!-- <link><![CDATA[index.php?admin=admin&c=admin&a=index]]></link> -->
+			<action>
+				<navname en='index' id='15'>文件列表</navname>
+				<link><![CDATA[index.php?admin=admin&c=file&a=index]]></link>
+			</action>
+	</controller>
+		<controller>
+			<menuname en='message' id='16'>留言模块</menuname>
+			<!-- <link><![CDATA[index.php?admin=admin&c=admin&a=index]]></link> -->
+			<action>
+				<navname en='index' id='17'>留言列表</navname>
+				<link><![CDATA[index.php?admin=admin&c=message&a=index]]></link>
+			</action>
+	</controller>
+</menu>

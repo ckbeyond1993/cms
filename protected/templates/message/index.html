@@ -1,0 +1,149 @@
+<div class="rightMid">
+   <div class="breadCrumb">您现在的位置是：给我留言</div>
+   <div class="message">
+        <form action="index.php?c=message&a=checkmessage" method="post" id="messageDIV">              
+                <table width="593">
+                    <tbody><tr>
+                        <td width="50">呢称：</td>
+                        <td width="473"><input type="text" maxlength="20"  class="con1" name="username" id="user" /></td>
+                    </tr>
+									 <tr>
+                        <td>主题：</td>
+                        <td><input type="text" maxlength="50"  name="title" id="title"  class="con1"></td>
+                    </tr>
+                    <tr>
+                        <td>内容：</td>
+                        <td><textarea class="con1" name="content" id="content" cols="60"  rows="8"></textarea></td>
+                    </tr>
+                </tbody></table>
+ 
+                <table width="593">
+                    <tbody><tr>
+                        <td width="45">验证码:</td>
+                        <td width="460"><input type="text" maxlength="5" name="code" id="code" class="con1">  <!--<a id="changeCode" href="index.php?c=user&a=code">href 无所谓</a>-->
+												<img id="imgDIV" style="vertical-align:bottom;margin-right:5px;height:20px" src="index.php?c=user&a=code" /> <span id="tip"></span></td>
+                    </tr>
+                </tbody></table> 
+                <br />			
+                <ul class="messageBtm" >
+                    <li>
+                        <input type="submit" value="提交">
+                        <input type="reset" value="重置">
+												<span id="tip"></span>
+                    </li>
+                </ul>
+				</form>
+				
+				<br />
+			<div id="tabDIV">
+		
+  <?php foreach($data as $v):?>
+
+		 <table   width="593" cellpadding=10 style="margin-left:200px;border-top:1px solid black">
+			<tbody>
+			<tr>
+					<td width="473" style="text-align:center;background-color:#eee"><span style="float:left">第<?php echo $v['id'];?>楼</span>昵称:<?php echo $v['username'];?></td>
+			</tr>
+			<tr>
+					<td style="text-indent:2em" style="text-align:right">主题:&nbsp;&nbsp;<?php echo $v['title'];?></td>
+			</tr>
+			<tr>
+					<td style="text-indent:2em;background-color:#cde">内容:&nbsp;&nbsp;<?php echo $v['content'];?></td>
+			</tr>
+			<tr>
+					<td style="text-align:right"><?php echo $v['time'];?></td>
+			</tr>
+			</tbody>
+		 </table>
+
+	<?php endforeach;?>
+	</div>
+	
+	<div style="float:right;margin-right:100px;margin-bottom:10px" id="pageDIV"><?php echo $page;?></div>
+</div>
+</div>
+<script>
+$('#imgDIV').click(function(){
+	var num=Math.random();
+	//alert(num);
+	$('#imgDIV').attr('src','index.php?c=user&a=code&num='+num);
+	return false;
+})
+
+$('#messageDIV').live('submit',function(){
+//alert ('a');
+	var username=$('#user').val();
+	var title=$('#title').val();
+	var content=$('#content').val();
+	var code=$('#code').val();
+	//alert (username);return false;
+	if(username==""||title==""||content==""||code==""){
+		$('#tip').html('<font color="red">请将内容填写完整后再提交</font>');
+	  return false;
+	}
+	
+	$.ajax({
+		type: "post",
+		url: 'index.php?c=message&a=checkmessage',
+		dataType:'json',
+		data: "username="+username+"&title="+title+"&content="+content+"&code="+code,
+		success: function(msg){
+			 //alert( "Data Saved: " + msg);
+			 if(msg==1){
+			   $("#messageDIV")[0].reset();     //清空输入框中的内容,等同于下面4行代码
+					// $('#user').attr('value','');
+					 //$('#title').attr('value','');
+					//$('#content').attr('value','');
+					 //$('#code').attr('value','');
+					 $('#imgDIV').attr('src','index.php?c=user&a=code&'+Math.random());
+			     $('#tip').html('<font color="green">留言成功，正在审核中...</font>');
+			 }
+			 if(msg==2){
+					$('#tip').html('<font color="red">验证码错误</font>');
+			 }
+
+
+		}
+	});
+	return false;
+})
+
+	$("#pageDIV a").live('click',function(){
+		//alert("a");
+		var url=$(this).attr("href");
+		//alert (url);return false;
+		$.ajax({
+			type: "GET",
+			url: url,
+			dataType:'json',      
+			//data: "name=John&location=Boston",
+			success: function(msg){
+        //alert( "Data Saved: " + msg);return false; //将上面dataType:'json', 屏蔽掉才能看到详细内容
+				var nr='';
+			for(var i=0;i<msg.data.length;i++){
+						nr+='<table width="593" cellpadding=10 style="margin-left:200px;border-top:1px solid black">'; 
+							nr+='<tbody>'; 
+							nr+='<tr>'; 
+							nr+='<td width="473" style="text-align:center;background-color:#eee"><span style="float:left">第'+msg.data[i].id+'楼</span>昵称:'+msg.data[i].username+'</td>'; 
+							nr+='</tr>'; 
+							nr+='<tr>'; 
+							nr+='<td style="text-indent:2em" style="text-align:right">主题:&nbsp;&nbsp;'+msg.data[i].title+'</td>'; 
+							nr+='</tr>'; 
+							nr+='<tr>'; 
+							nr+='<td style="text-indent:2em;background-color:#cde">内容:&nbsp;&nbsp;'+msg.data[i].content+'</td>'; 
+							nr+='</tr>'; 
+							nr+='<tr>'; 
+							nr+='<td style="text-align:right">&nbsp;&nbsp;'+msg.data[i].time+'</td>'; 
+							nr+='</tr>';
+							nr+='</tbody>'; 
+						nr+='</table>'; 
+//alert(nr);
+			 }
+
+				 $("#tabDIV").html(nr);
+				 $("#pageDIV").html(msg.page);
+			}
+		});
+		return false;
+		})
+</script>

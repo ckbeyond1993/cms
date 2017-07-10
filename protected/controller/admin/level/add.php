@@ -1,0 +1,12 @@
+<?php 
+checkLogin();
+checkLevel();
+if(!empty($_POST)){
+$_POST['menu']=json_encode($_POST['menu']);
+//print_r($_POST);exit;
+if(add($_POST,'level')){
+header('location:index.php?admin=admin&c=level&a=index');
+}
+}
+view(array(),'level/add');
+?>
