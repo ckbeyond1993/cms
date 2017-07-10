@@ -1,0 +1,8 @@
+.product{height:400px;}
+.pro{float:left; width:136px; height:190px; text-align:center; margin-top:10px; padding-left:16px;}
+.img{border:1px dashed;}
+.d1{background:url(../images/icon_02.gif) right no-repeat; margin-top:8px; font-weight:650;}
+.d2{background:url(../images/icon_03.gif) right no-repeat; margin:10px 0; font-weight:bold;}
+.product pro{display:inline;}
+.d2 a:link, .d2 a:visited{color:#00F; text-decoration:none;}
+.d2 a:hover, .d2 a:active{color:red; text-decoration:none;}

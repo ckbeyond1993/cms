@@ -1,0 +1,100 @@
+body{ font-family:"微软雅黑", "新宋体", "黑体", "新新宋体";font-size:12px;}
+ul, li{margin:0; padding:0; list-style:none;}
+.clear{clear:both!important; float:none!important;}
+
+/* 默认链接 */
+a{
+	outline:none!important/*FF，IE8下去掉激活的虚线边框*/;
+	*hide-focus:expression(this.hideFocus=true)/*IE6,IE7下去掉激活的虚线边框*/;
+}
+#container{width:930px; margin:auto; height:800px;}
+/* 层居中的要决： */
+/*
+	1 要有宽度  2 左右外补丁要为auto
+*/
+/*
+headtop
+headTop   驼峰式
+head_top  _
+head-top*/
+/*menu       菜单
+navigator  导航*/
+a img{border:none;}
+.headTop{height:90px;}
+.logo{margin:0 35px 0 20px;}
+.logo, .headRight{float:left;}
+.headRight{width:650px;}
+.tool{
+	text-align:right; height:25px; line-height:25px;/* height等于line-height，字就可以垂直居中 */
+	padding-right:10px; /*padding:0 10px 0 0;*/
+	background:url(../images/actbg.gif) right center no-repeat;
+	margin-bottom:9px;
+}
+.tool a{margin:0 5px; cursor:pointer;}/* 千万不要伤及无辜 */
+.tool a:link, .toot a:visited{color:#366D74; text-decoration:none;}
+.tool a:hover, .toot a:active{
+	color:red; text-decoration:underline;
+ 	position:relative; bottom:2px;
+ }
+.nav{height:36px;}
+.nav li{float:left; height:36px; line-height:36px; width:20px; background:url(../images/nav_bg.jpg) repeat-x;}
+li.navLeft{margin:1px 0;}
+li.navCenter{width:600px; background-position:-44px; text-align:center;}
+li.navRight{background-position:0 -84px;}
+/*.nav li{float:left; height:32px; line-height:32px;}
+.navLeft{width:15px; background:url(../images/nav_left.gif);}
+.navCenter{background:url(../images/nav_center.gif) repeat-x; color:#FFFFFF;}
+.navRight{width:15px; background:url(../images/nav_right.gif);}*/
+.navCenter a{padding:0 15px 0 15px; border-right:#FFF 1px solid; color:#FFF;}
+.navCenter a:link, .navCenter a:visited{color:#FFFFFF; text-decoration:none;}
+.navCenter a:hover, .navCenter a:active{
+	color:red; text-decoration:underline; 
+	position:relative; bottom:2px;
+}
+a.last{border:none;}
+
+/*
+	优先级算法
+	1、有!important的优先级最高
+	2、选择器总分数高，优先级就高 100分/id选择器  10分/class选择器   1分/标签器
+	3、分数相等，后面覆盖前面，就近原则
+*/
+
+/* 主体 */
+.main{overflow:hidden; _height:1%;}
+.mainLeft, .mainRight{float:left;}
+.mainLeft{width:200px; background:url(../images/leftbg.jpg) center bottom no-repeat; padding-bottom:190px; margin:0 15px 0 12px;}
+
+/* 分类 */
+.cate{width:190px; margin:6px auto;}
+.cateTop{height:8px; background:url(../images/cate_top.jpg);}
+.cateMid{background:url(../images/cate_mdl.jpg) repeat-y;}
+.cateBtm{height:8px; background:url(../images/cate_btm.jpg);}
+
+.cateMid a{
+	display:block; width:140px; text-indent:20px; /*padding-left:20px;*/ height:26px; line-height:26px; margin:auto;
+	background:url(../images/abg.gif) left center no-repeat;
+	border-bottom:#959595 1px solid;
+}
+.cateMid a:link, .cateMid a:visited{color:#366D74; text-decoration:none;}
+.cateMid a:hover, .cateMid a:active{color:red; text-decoration:underline;}
+.search{height:90px; border:#C3D2D9 6px solid; margin-top:6px; background:url(../images/searchbg.jpg) right bottom no-repeat;}
+.search p{margin:6px;}
+
+/* 右边 */
+.mainRight{width:660px;}
+.rightTOP{height:49px; background:url(../images/rightbox_top.gif);}
+.rightBtm{height:15px; background:url(../images/rightbox_btm.gif); margin-bottom:2px;}
+.rightMid{border:2px #E2E2E2 solid; border-bottom:none; border-top:none; padding:10px 20px;}
+/* 面包屑 */
+.breadCrumb{height:28px; line-height:28px; border-bottom:#CCCCCC 1px dashed;}
+.con{background:url(../images/index_conbg.jpg) left bottom no-repeat;}
+.con p{line-height:200%; text-indent:2em;/* 2个字体大小 */}
+/*foot*/
+.footer{height:36px; color:#FFF; font-size:13px;}
+.footer li{
+			float:left; height:36px; line-height:36px; width:15px;
+			background:url(../images/foot.gif) repeat-x;
+		}
+li.footCen{width:860px; background-position:0 -44px; text-align:center;}
+li.footRig{background-position:0 -84px;}

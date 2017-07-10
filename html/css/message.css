@@ -1,0 +1,6 @@
+/*留言*/
+.message{width:636px; height:740px; margin-top:15px;}
+.messageCen li{width:555px; height:250px; line-height:35px; margin-top:5px; border:1px; margin-left:100px;}
+.con1{border:#999 1px solid; margin-top:10px;}
+.con img{border:1px solid; padding-left:0;}
+.messageBtm{margin-top:10px; text-align:center;}

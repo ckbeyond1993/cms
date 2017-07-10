@@ -1,0 +1,149 @@
+	<div class="mainRight">
+		<div class="rightTOP"></div>
+			<div class="rightMid">
+				<div class="breadCrumb">您现在的位置是：会员注册</div>
+					<div class="login"><!--style="height:20px;line-height:20px;text-align:right;width:80px;float:left"-->
+						<form action="index.php?c=user&a=register" method="post" id="reg">
+							<p><label for="user">用户名：</label>
+							<input type="text" class="myinput" name="username" id="user" maxlength="12" status=0 />
+							<span id="tip"></span></p>
+							<p><label for="pwd">密&nbsp;&nbsp;码：</label>
+							<input type="password" class="myinput" name="password" id="pwd" /></p>
+							</p><label for="pwd2">确认密码：</label>
+							<input type="password" class="myinput" id="pwd2" status=0 />
+							<span id="tip2"></span></p>
+							</p><label for="email">邮&nbsp;&nbsp;箱：</label>
+							<input type="text" class="myinput" name="email" id="email" status=0 />
+							<span id="tip3"></span></p>
+							<p><label for="code" style="margin-top:10px">验证码：</label>
+							<input type="text" class="myinput" size="8" name="code" id="code" status=0 />
+							<img id="imgDIV" src="index.php?c=user&a=code" style="vertical-align:bottom" />
+							<a href="index.php?c=user&a=code" id="changeCode">看不清楚，换一张？</a>
+							<span id="tip4"></span></p>
+							<input type="submit"  value="注册" style="margin-left:85px" /><span id="tip5"></span>
+				
+						</form>
+					</div>
+			</div>
+			<div class="rightBtm"></div>
+	</div>
+<script>
+
+
+
+
+
+$("#user").blur(function(){
+//alert('a');
+var user=$(this).attr('value'); //等价于 var user=$(this).val();
+//alert (user);return false;
+	$.ajax({
+			type: "POST",
+			url: "index.php?c=user&a=checkregister",
+			data: "username="+user,
+			success: function(msg){
+				 //alert( "Data Saved: " + msg );
+				 if(msg==1){
+				    $("#tip").html("<font color='red'>   该用户已存在</font>");	
+            $('#user').attr('status',0);				//防止先输入未被注册用户名，又重新输入已注册的用户名		
+				 }
+				 else{
+				   if(user){
+				        $("#tip").html("<font color='green'>    该用户可用</font>");
+								$('#user').attr('status',1);
+					 }
+					 else{
+					    $("#tip").html("<font color='red'>   请输入用户名</font>");
+					 }
+					  //$('#user').attr('status',1);	//$("#p1").find('input').attr('status',0);  这两种都行，当初在select的时候不行可能是因为select很多，option也很多	
+				 }
+			}
+	});
+})
+
+$("#pwd2").blur(function(){
+	//alert('a');
+	var pwd2=$(this).attr('value'); //等价于 var user=$(this).val();
+	var pwd=$("#pwd").val();
+	//alert (pwd);return false;
+	if(pwd==pwd2&&pwd!=''){
+		$("#tip2").html("<font color='green'>    OK!</font>");
+		$('#pwd2').attr('status',1);    
+	}
+	else{
+		$("#tip2").html("<font color='red'>   密码不一致</font>");
+	}
+})
+
+$("#email").blur(function(){
+	//alert('a');
+	//var str = "teaching.code@yahoo.com.cn";
+	var email=$("#email").val();
+	var reg=/[\w-.]+@[\w]+\.(com|cn|com.cn)/;
+	var result=reg.test(email);
+	if(!result){
+		$("#tip3").html("<font color='red'>    邮箱格式不正确</font>");
+	}
+	else{
+		$("#tip3").html("<font color='green'>    OK!</font>");
+		$('#email').attr('status',1);
+	}
+})
+
+
+$("#code").blur(function(){   //输完验证码直接点注册会出bug?    好像可以，直接点注册还是会先判断这个失焦事件
+	var code=$("#code").val();
+	$.ajax({
+			type: "POST",
+			url: "index.php?c=user&a=checkcode",
+			data: "code="+code,
+			success: function(msg){
+				 //alert( "Data Saved: " + msg );
+				 if(msg==1){
+						$("#tip4").html("<font color='green'>    OK!</font>");
+						$('#code').attr('status',1);
+				 }
+				 else{
+				    $("#tip4").html("<font color='red'>   验证码错误</font>");
+						$('#code').attr('status',0);
+				 }
+			}
+	});
+})
+
+
+$("#changeCode").click(function(){
+//alert(1);
+var num=Math.random();//0-1之间的随机浮点数
+//alert(num);
+$a=$("#imgDIV").attr('src','index.php?c=user&a=code&num='+num);//如果不加参数，会当成同一个请求，浏览器有缓存，不会再次请求
+return false
+})
+
+
+
+$("#reg").submit(function(){  //上面什么都不点，会提交，这是个bug,先输错在输对也是个bug
+//alert($('#user').val());
+	//if($('#user').val()==''){ //防止 为空提交
+	 //$("#tip5").html("<font color='red'>   请输入用户名</font>");  为空的话下路p1=0；不需要重复判断
+	// return false;
+	//}
+	//if($('#pwd2').val()==''){ //防止 为空提交
+	// $("#tip5").html("<font color='red'>   请输入密码</font>");  为空的话下路p2=0；不需要重复判断
+	 //return false;
+	//}
+
+	var p1=$('#user').attr('status');
+	var p2=$('#pwd2').attr('status');
+	var p3=$("#email").attr('status');
+	var p4=$('#code').attr('status');
+	//alert (p4);
+	if(p1==0||p2==0||p3==0||p4==0)
+	{
+		return false;
+	}
+})
+
+
+
+</script>

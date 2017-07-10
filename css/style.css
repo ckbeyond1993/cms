@@ -1,0 +1,49 @@
+
+/********************************      Basic Structure      ********************************/
+/*自己从后台复制到前台的CSS，主要要分页样式*/
+
+
+a              { color: #17536f; text-decoration: none; }
+a:hover     { color: #000; }
+a:active     { color: #777; }
+a:focus     { outline: 1px; }
+
+
+
+/********************************      General Classes      ********************************/
+
+.clear {
+                clear: both;
+                }
+				
+
+
+
+/********************************      Main Content      ********************************/
+
+/************ Layout ************/
+
+
+.rightMid a {
+                margin: 0 5px 0 0;
+                padding: 3px 6px;
+                }
+
+.rightMid  a.number {
+				border: 1px solid #ddd;
+                }
+
+.rightMid  a.current {
+               /* #469400*/
+                background: #9ac9ea url('../images/bg-button-green.gif') top left repeat-x !important;
+                border-color: #459300 !important;
+                color: #fff !important;
+                }
+				
+.rightMid  a.current:hover {
+				text-decoration: underline;
+                }
+								
+.login  label {float:left;width:80px; text-align:right}
+
+.login  input {margin:0 5px 0 5px}
